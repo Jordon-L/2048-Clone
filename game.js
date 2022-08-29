@@ -11,13 +11,15 @@ document.onkeydown = function(e) {
           console.log(gameGrid)
           break;
       case "ArrowUp":
-          alert("ArrowUp"); //show the message saying up"
+          move("ArrowUp"); //show the message saying up"
+          console.log(gameGrid)
           break;
       case "ArrowRight":
-          alert("ArrowRight"); //show the message saying right"
+          move("ArrowRight");
+          console.log(gameGrid)
           break;
       case "ArrowDown":
-          alert("ArrowDown"); //show the message saying down"
+          move("ArrowDown"); //show the message saying down"
           break;
   }
 };
@@ -107,6 +109,84 @@ function move(dir){
         }
       }
     }
+  }
+  if(dir === "ArrowRight"){
+    for(let n = 0; n < gameGrid.length; n++){
+      let row = gameGrid[n]
+      let current = row.length-1;
+      for(let i = row.length-2; i >= 0; i--){
+        if(row[current] == row[i] && row[i] != undefined){
+          mergeTile(n,current,n,i);
+          break;
+        }
+        else if(row[i] != undefined){
+          current = i;
+        }
+      }
+      for(let i = row.length-2; i >= 0; i--){
+        if(row[i] !== undefined){
+          for(let j = row.length-1; j > 0; j--){
+            if(row[j] === undefined){
+              moveTile(n,j,n,i);
+              
+              break;
+            }
+          }
+        }
+      }
+    }    
+  }
+  if(dir === "ArrowDown"){
+    for(let n = 0; n < gameGrid.length; n++){
+      let row = gameGrid[n]
+      let current = row.length-1;
+      for(let i = row.length-2; i >= 0; i--){
+        if(gameGrid[current][n] == gameGrid[i][n] && gameGrid[i][n] != undefined){
+          mergeTile(current,n,i,n);
+          break;
+        }
+        else if(gameGrid[i][n] != undefined){
+          current = i;
+        }
+      }
+      for(let i = row.length-2; i >= 0; i--){
+        if(gameGrid[i][n] !== undefined){
+          for(let j = row.length-1; j > 0; j--){
+            if(gameGrid[j][n] === undefined){
+              moveTile(j,n,i,n);
+              
+              break;
+            }
+          }
+        }
+      }
+    }    
+  }
+  if(dir === "ArrowUp"){
+    for(let n = 0; n < gameGrid.length; n++){
+      let row = gameGrid[n]
+      let current = 0;
+      for(let i = 1; i < row.length; i++){
+        if(gameGrid[current][n] == gameGrid[i][n] && gameGrid[i][n] != undefined){
+          mergeTile(current,n,i,n);
+          break;
+        }
+        else if(gameGrid[i][n] != undefined){
+          current = i;
+        }
+      }
+      for(let i = 1; i < row.length; i++){
+        if(gameGrid[i][n] !== undefined){
+          for(let j = 0; j < i; j++){
+            if(gameGrid[j][n] === undefined){
+              moveTile(j,n,i,n);
+              
+              break;
+            }
+          }
+        }
+      }
+    }    
   }
 }
 function moveTile(x1,y1,x2,y2){
