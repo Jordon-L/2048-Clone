@@ -2,25 +2,28 @@
 let gameGrid = undefined;
 let emptyCells = undefined;
 let numberOfCells = 16;
+let validMove = false;
 const tileDiv = document.querySelector(".tile-container");
 newGame()
 document.onkeydown = function(e) {
   switch (e.key) {
-      case "ArrowLeft":
-          move("ArrowLeft");
-          console.log(gameGrid)
+      case "ArrowLeft":    
+          move("ArrowLeft");         
           break;
       case "ArrowUp":
-          move("ArrowUp"); //show the message saying up"
-          console.log(gameGrid)
+          move("ArrowUp");
           break;
       case "ArrowRight":
           move("ArrowRight");
-          console.log(gameGrid)
           break;
       case "ArrowDown":
-          move("ArrowDown"); //show the message saying down"
+          move("ArrowDown"); 
           break;
+  }
+  if(validMove == true){
+    validMove = false;
+    removeNewTileCSS();
+    populateEmptyCell();
   }
 };
 
@@ -41,11 +44,11 @@ function newGame(){
 function populateEmptyCell(){
   const newDiv = document.createElement("div");
   newDiv.classList.add('tile');
+  newDiv.classList.add('tile-new');
   let [rowNum,colNum] = getRandomEmptyCell();
   if(rowNum == -1){
     alert('no')
     return;
-    
   }
   newDiv.classList.add(`tile-position-${rowNum}-${colNum}`);
   newDiv.classList.add(`tile-num-2`);
@@ -81,6 +84,14 @@ function getAvailableCells(){
     }
   }
   return cells;
+}
+
+function removeNewTileCSS(){
+  let newTile = tileDiv.querySelector(".tile-new");
+  if(newTile == null){
+    return;
+  }
+  newTile.classList.remove("tile-new")
 }
 
 function move(dir){
@@ -190,7 +201,7 @@ function move(dir){
   }
 }
 function moveTile(x1,y1,x2,y2){
-  
+  validMove = true;
   if(gameGrid[x1][y1] === undefined){
     console.log(x2,y2,gameGrid[x2][y2])
     console.log(x1,y1,gameGrid[x1][y1])
@@ -203,12 +214,14 @@ function moveTile(x1,y1,x2,y2){
 }
 //merges [x2,y2] into [x1,y2]
 function mergeTile(x1,y1,x2,y2){
+  validMove = true;
   if(gameGrid[x1][y1] == gameGrid[x2][y2]){
     tileDiv.querySelector(`.tile-position-${x2}-${y2}`).remove();
     let tile = tileDiv.querySelector(`.tile-position-${x1}-${y1}`);
     tile.classList.remove(`tile-num-${gameGrid[x1][y1]}`);
     let value = gameGrid[x1][y1] + gameGrid[x2][y2];
-    tile.textContent = value;
+    let inner = tile.querySelector(".tile-inner");
+    inner.textContent = value;
     gameGrid[x1][y1] = value;
     tile.classList.add(`tile-num-${gameGrid[x1][y1]}`);
     gameGrid[x2][y2] = undefined;

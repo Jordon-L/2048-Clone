@@ -56,9 +56,9 @@ html{
   font-size : 55px;
   text-align: center;
   font-weight: bold;
-  background-color: rgba(255, 255, 255, 0.8);
   transition: 100ms ease-in-out;
 }
+
 
 .tile-position-0-0 {
   transform: translate(0px, 0px);
@@ -124,7 +124,7 @@ html{
   transform: translate(405px, 405px);
 }
 
-.tile-num-2 {
+.tile-num-2 .tile-inner {
   background-color:#eee4da;
 }
 
@@ -175,4 +175,20 @@ html{
 .tile-num-2048 {
   color:#f9f6f2;
   background-color:#edc22e;
+}
+
+.tile-new .tile-inner{
+  animation: tile-appear 200ms ease 100ms;
+  animation-fill-mode: backwards;
+}
+
+@keyframes tile-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
